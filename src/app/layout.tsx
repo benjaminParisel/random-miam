@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { ReactNode } from 'react';
 import NextAuthProvider from '@/auth/NextAuthProvider';
-import NavBar from '@/components/Navbar';
+import Header from '@/components/header';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,8 +17,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <body className={`inter.className`}>
         <NextAuthProvider>
-          <div className="w-10/12 m-auto text-center bg-white flex flex-col min-h-screen">
-            <NavBar />
+          <div className="w-10/12 m-auto text-center flex flex-col min-h-screen">
+            <Header />
             <div className="grow">{children}</div>
             <div>Footer</div>
           </div>
