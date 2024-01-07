@@ -5,11 +5,11 @@ import { DefaultUser } from 'next-auth';
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+  DropdownMenuItem,
+} from '@/components/ui';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { User } from 'lucide-react';

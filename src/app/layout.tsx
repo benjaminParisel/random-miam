@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en">
       <body className={`inter.className`}>
         <NextAuthProvider>
-          <div className="w-10/12 m-auto text-center flex flex-col min-h-screen">
+          <div className="m-auto text-center flex flex-col ">
             <Header />
             <div className="grow">{children}</div>
             <div>Footer</div>
