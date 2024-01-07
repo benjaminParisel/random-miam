@@ -1,4 +1,3 @@
-import { Button } from './button';
 import { Avatar } from './avatar';
 import {
   DropdownMenu,
@@ -11,7 +10,6 @@ import {
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './card';
 
 export {
-  Button,
   Avatar,
   Card,
   CardContent,
