@@ -1,10 +1,8 @@
-import { getServerAuthSession } from '@/server/auth';
-
 export default async function HomePage() {
-  const authSession = await getServerAuthSession(); //(1)
   return (
-    <main className="flex items-center justify-center h-screen">
-      <p>Welcome on Random Miam</p>
+    <main className="flex flex-col items-center justify-center h-screen">
+      <h3>Bienvenue sur random Miam</h3>
+      <p>Pour accéder au site, merci de vous identifier.</p>
     </main>
   );
 }

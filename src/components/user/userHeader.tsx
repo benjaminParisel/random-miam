@@ -38,9 +38,11 @@ export default function userHeader(props: UserHeaderProps) {
             <Link href="/myAccount">Mon compte</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuLabel onClick={handleLogout}>
-            Se déconnecter
-          </DropdownMenuLabel>
+          <DropdownMenuItem>
+            <DropdownMenuLabel onClick={handleLogout}>
+              Se déconnecter
+            </DropdownMenuLabel>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

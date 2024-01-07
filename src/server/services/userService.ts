@@ -4,15 +4,14 @@ export const userService = {
 
 function authenticate(username: string, password: string) {
   if (username !== process.env.USERNAME && password !== process.env.PASSWORD) {
-    //(1)
-    return null; //(2)
+    return null;
   }
 
   const user = {
     id: '9001',
-    name: 'Web Admin',
+    name: 'Admin',
     email: 'admin@example.com',
-  }; //(3)
+  };
 
-  return user; //(4)
+  return user;
 }

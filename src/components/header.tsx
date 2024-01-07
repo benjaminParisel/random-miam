@@ -40,10 +40,10 @@ export default async function Header() {
         <div className="flex flex-row gap-3 items-center">
           {!session && (
             <Link
-              className="font-medium mt-2 text-blue-600 hover:underline"
+              className="font-medium text-gray-300 hover:bg-gray-700 hover:text-white mt-2 hover:underline"
               href="/login"
             >
-              Login
+              Se connecter
             </Link>
           )}
           {session && <UserHeader user={session?.user} />}

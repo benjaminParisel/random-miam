@@ -1,14 +1,8 @@
 import { getAllRecipesWith } from '@/server/recipes/recipe';
 import { RecipeType } from '@/types/recipe';
 import { getRandomItemFromArray } from '@/server/recipes/utils';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui';
 import { getServerAuthSession } from '@/server/auth';
+import RecipeCard from '@/components/recipe/Card';
 
 export default async function Random() {
   const authSession = await getServerAuthSession();
@@ -31,19 +25,7 @@ export default async function Random() {
             {recipes.map(
               (recipe) =>
                 recipe && (
-                  <Card key={recipe.id} className="w-[310px]">
-                    <CardHeader>
-                      <CardTitle className="text-ellipsis text-wrap text-md">
-                        {recipe.title}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p>{recipe.details}</p>
-                    </CardContent>
-                    <CardFooter>
-                      <p className="text-sm text-gray-500">{recipe.type}</p>
-                    </CardFooter>
-                  </Card>
+                  <RecipeCard key={recipe.id} recipe={recipe}></RecipeCard>
                 )
             )}
           </div>

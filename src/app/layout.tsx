@@ -20,7 +20,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <div className="m-auto text-center flex flex-col ">
             <Header />
             <div className="grow">{children}</div>
-            <div>Footer</div>
           </div>
         </NextAuthProvider>
       </body>
