@@ -3,7 +3,7 @@ export const userService = {
 };
 
 function authenticate(username: string, password: string) {
-  if (username !== 'admin' && password !== 'admin') {
+  if (username !== process.env.USERNAME && password !== process.env.PASSWORD) {
     //(1)
     return null; //(2)
   }

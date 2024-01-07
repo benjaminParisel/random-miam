@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
 }
 
 model Account {
@@ -60,3 +60,9 @@ model VerificationRequest {
   @@unique([identifier, token])
 }
 
+model Recipe {
+  id        String     @default(cuid()) @id
+  title     String
+  details   String?
+  type      String
+}
