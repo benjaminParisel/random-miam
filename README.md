@@ -76,3 +76,7 @@ Commands:
 
 - pnpx prisma db push
 - pnpx primsa generate
+
+## Links
+
+-https://vercel.com/guides/nextjs-prisma-postgres
