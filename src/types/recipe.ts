@@ -19,9 +19,9 @@ export function getType(type: string) {
       return RecipeType.Entrees;
     case 'plats':
       return RecipeType.Plats;
-    case 'dessert':
+    case 'desserts':
       return RecipeType.Dessert;
     default:
-      '';
+      return '';
   }
 }
