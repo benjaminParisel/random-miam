@@ -1,8 +1,6 @@
-import RecipesCards from '@/components/recipe/recipesCards';
 import { DataTable } from '@/components/table/Data-table';
 import { getServerAuthSession } from '@/server/auth';
 import { getAllRecipesWith } from '@/server/recipes/recipe';
-import { RecipeType, getType } from '@/types/recipe';
 import { columns } from '../Columns';
 
 export default async function listType({
@@ -12,10 +10,6 @@ export default async function listType({
 }) {
   const { typeId } = params;
   const authSession = await getServerAuthSession();
-  // TODO: Remove when type is only in lowercase in DB
-  //   const type = typeId[0].toUpperCase() + typeId.slice(1);
-  console.log(typeId);
-
   const recipes = await getAllRecipesWith(getType(typeId));
 
   return (
