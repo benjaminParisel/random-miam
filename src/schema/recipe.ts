@@ -8,7 +8,7 @@ export const recipeTypeSchema = z.union([
 
 export const recipeSchema = z.object({
   id: z.string().optional(),
-  title: z.string().optional(),
+  title: z.string(),
   details: z.string().optional(),
   type: recipeTypeSchema,
 });

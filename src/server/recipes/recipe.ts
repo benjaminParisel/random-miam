@@ -1,6 +1,12 @@
+'use server';
 import type { Recipe } from '@prisma/client';
 import prisma from '@/lib/prisma';
-import { recipeSchema, recipeTypeSchema, recipesSchema } from '@/schema/recipe';
+import {
+  recipeSchema,
+  recipeSchemaType,
+  recipeTypeSchema,
+  recipesSchema,
+} from '@/schema/recipe';
 
 export const getAllRecipesWith = async (type: string) => {
   const data: Recipe[] = await prisma.recipe.findMany({
@@ -12,7 +18,12 @@ export const getAllRecipesWith = async (type: string) => {
   return recipes;
 };
 
-export const createRecipe = async (recipe: Recipe) => {
+export const createRecipe = async (recipe: recipeSchemaType) => {
+  const validation = recipeSchema.safeParse(recipe);
+  if (!validation.success) {
+    throw new Error('Recipe is not valid');
+  }
+
   const recipeCreated = await prisma.recipe.create({
     data: {
       title: recipe.title,
@@ -22,6 +33,24 @@ export const createRecipe = async (recipe: Recipe) => {
   });
 
   return recipeCreated;
+};
+
+export const updateRecipe = async (recipe: recipeSchemaType) => {
+  const validation = recipeSchema.safeParse(recipe);
+  if (!validation.success) {
+    throw new Error('Recipe is not valid');
+  }
+
+  const recipeUpdated = await prisma.recipe.update({
+    where: {
+      id: recipe.id,
+    },
+    data: {
+      title: recipe.title,
+      details: recipe.details,
+    },
+  });
+  return recipeUpdated;
 };
 
 export const getRecipeById = async (id: string) => {

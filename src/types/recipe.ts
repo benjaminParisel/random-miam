@@ -10,7 +10,7 @@ export type RecipeType = 'entree' | 'plat' | 'dessert';
 export const RecipeType = {
   Entrees: 'entree',
   Plats: 'plat',
-  Dessert: 'dessert',
+  Desserts: 'dessert',
 };
 
 export function getType(type: string) {
@@ -20,7 +20,7 @@ export function getType(type: string) {
     case 'plats':
       return RecipeType.Plats;
     case 'desserts':
-      return RecipeType.Dessert;
+      return RecipeType.Desserts;
     default:
       return '';
   }
