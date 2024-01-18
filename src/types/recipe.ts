@@ -1,6 +1,6 @@
 export type Recipe = {
   id?: string;
-  title?: string;
+  title: string;
   details?: string | null;
   type: RecipeType;
 };

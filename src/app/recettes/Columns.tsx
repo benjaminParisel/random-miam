@@ -1,12 +1,13 @@
 'use client';
 import { Column, ColumnDef } from '@tanstack/react-table';
 
-import { cn } from '@/lib/utils';
-import Link from 'next/link';
-import { CiEdit } from 'react-icons/ci';
-import { Recipe } from '@/types/recipe';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { Recipe } from '@/types/recipe';
 import { RxCaretDown, RxCaretSort, RxCaretUp } from 'react-icons/rx';
+
+import { recipeSchema } from '@/schema/recipe';
+import AddOrEditRecipeDialog from '@/components/recipe/AddOrEditRecipe';
 
 export const columns: ColumnDef<Recipe>[] = [
   {
@@ -48,15 +49,8 @@ export const columns: ColumnDef<Recipe>[] = [
   {
     id: 'actions',
     cell: ({ row }) => {
-      const recipe = row.original;
-
-      return (
-        <div>
-          <Link href={`/recettes/${recipe.type.toLowerCase()}/${recipe.id}`}>
-            <CiEdit className="size-6 text-muted-foreground" />
-          </Link>
-        </div>
-      );
+      const recipe = recipeSchema.parse(row.original);
+      return <AddOrEditRecipeDialog recipe={recipe} />;
     },
   },
 ];

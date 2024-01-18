@@ -4,16 +4,15 @@ import { getAllRecipesWith } from '@/server/recipes/recipe';
 import { columns } from '../Columns';
 import { RecipeType, getType } from '@/types/recipe';
 
-import CreateRecipeBtn from '@/components/recipe/CreateRecipe';
 import { DataTablePagination } from '@/components/table/TablePagination';
-import CreateFormBtn from '@/components/recipe/CreateFormBtn';
+import AddOrEditRecipeDialog from '@/components/recipe/AddOrEditRecipe';
 
 export default async function listType({
   params,
 }: {
   params: { typeId: string };
 }) {
-  const { typeId } = params;
+  const typeId = params.typeId as RecipeType;
   const authSession = await getServerAuthSession();
   const type = getType(typeId);
   const recipes = await getAllRecipesWith(type);
@@ -23,7 +22,7 @@ export default async function listType({
       {authSession && (
         <div className="flex flex-col justify-center">
           <div className="flex flex-col items-end">
-            <CreateRecipeBtn typeId={typeId as RecipeType} />
+            <AddOrEditRecipeDialog typeId={type} />
           </div>
 
           <DataTable data={recipes} columns={columns} />

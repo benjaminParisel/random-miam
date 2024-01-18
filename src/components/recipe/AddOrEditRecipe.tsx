@@ -26,27 +26,41 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 import { recipeSchemaType, recipeSchema } from '@/schema/recipe';
-import { createRecipe } from '@/server/recipes/recipe';
+import { createRecipe, updateRecipe } from '@/server/recipes/recipe';
 import { RecipeType, getType } from '@/types/recipe';
 import { RxPlusCircled } from 'react-icons/rx';
 import { useState } from 'react';
+import { CiEdit } from 'react-icons/ci';
 
-function CreateRecipeBtn({ typeId }: { typeId: RecipeType }) {
+interface RecipeFormProps {
+  recipe?: recipeSchemaType;
+  typeId?: RecipeType;
+}
+
+export default function AddOrEditRecipeDialog(props: RecipeFormProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const type = getType(typeId);
+  const isEditMode = !!props.recipe;
+  let formType;
+  if (props.typeId) {
+    formType = props.typeId;
+  } else if (props.recipe?.type) {
+    formType = props.recipe.type;
+  }
 
   const recipeForm = useForm<recipeSchemaType>({
     resolver: zodResolver(recipeSchema),
-    defaultValues: { details: '', type: type },
+    defaultValues: props.recipe || { details: '', type: formType },
   });
 
   async function onSubmit(values: recipeSchemaType) {
     try {
-      await createRecipe(values);
+      isEditMode ? await updateRecipe(values) : await createRecipe(values);
       toast({
         title: 'Succès',
-        description: 'Recette ajouté avec succès.',
+        description: `Recette ${
+          isEditMode ? 'modifiée' : 'ajoutée'
+        } avec succès.`,
         variant: 'success',
       });
       setOpen(false);
@@ -62,24 +76,38 @@ function CreateRecipeBtn({ typeId }: { typeId: RecipeType }) {
     }
   }
 
+  const addBtn = (
+    <Button
+      variant={'outline'}
+      className="group flex flex-row items-center justify-center gap-2"
+    >
+      <RxPlusCircled className="size-6 text-muted-foreground group-hover:text-primary" />
+      <p className="font-bold text-muted-foreground group-hover:text-primary">
+        Ajouter
+      </p>
+    </Button>
+  );
+
+  const editBtn = (
+    <Button
+      variant={'outline'}
+      className="group flex flex-row items-center justify-center gap-2 border-muted"
+    >
+      <CiEdit variant={'outline'} className="size-6 text-muted-foreground" />
+    </Button>
+  );
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant={'outline'}
-          className="group flex flex-row items-center justify-center gap-2"
-        >
-          <RxPlusCircled className="size-6 text-muted-foreground group-hover:text-primary" />
-          <p className="font-bold text-muted-foreground group-hover:text-primary">
-            Ajouter
-          </p>
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{isEditMode ? editBtn : addBtn}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Ajouter une recette</DialogTitle>
+          <DialogTitle>
+            {' '}
+            {isEditMode ? 'Modifier' : 'Ajouter'} une recette
+          </DialogTitle>
           <DialogDescription>
-            Ajouter une recette de type {typeId}
+            {isEditMode ? 'Modifier' : 'Ajouter'} une recette de type {formType}
           </DialogDescription>
         </DialogHeader>
         <Form {...recipeForm}>
@@ -135,5 +163,3 @@ function CreateRecipeBtn({ typeId }: { typeId: RecipeType }) {
     </Dialog>
   );
 }
-
-export default CreateRecipeBtn;
