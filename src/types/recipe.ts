@@ -5,10 +5,23 @@ export type Recipe = {
   type: RecipeType;
 };
 
-export type RecipeType = 'Entrees' | 'Plat' | 'Desserts';
+export type RecipeType = 'entree' | 'plat' | 'dessert';
 
 export const RecipeType = {
-  Entree: 'Entrees',
-  Plat: 'Plat',
-  Dessert: 'Desserts',
+  Entrees: 'entree',
+  Plats: 'plat',
+  Desserts: 'dessert',
 };
+
+export function getType(type: string) {
+  switch (type) {
+    case 'entrees':
+      return RecipeType.Entrees as RecipeType;
+    case 'plats':
+      return RecipeType.Plats as RecipeType;
+    case 'desserts':
+      return RecipeType.Desserts as RecipeType;
+    default:
+      throw new Error('Invalid type');
+  }
+}

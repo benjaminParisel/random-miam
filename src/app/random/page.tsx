@@ -7,9 +7,9 @@ import RecipeCard from '@/components/recipe/Card';
 export default async function Random() {
   const authSession = await getServerAuthSession();
 
-  const starters = await getAllRecipesWith(RecipeType.Entree);
-  const main = await getAllRecipesWith(RecipeType.Plat);
-  const desserts = await getAllRecipesWith(RecipeType.Dessert);
+  const starters = await getAllRecipesWith(RecipeType.Entrees);
+  const main = await getAllRecipesWith(RecipeType.Plats);
+  const desserts = await getAllRecipesWith(RecipeType.Desserts);
 
   const recipes = [
     getRandomItemFromArray(starters),
@@ -18,10 +18,10 @@ export default async function Random() {
   ];
 
   return (
-    <div className="flex max-x-screen min-h-screen flex-col items-center p-12">
+    <div className="flex min-h-screen flex-col items-center p-12">
       {authSession && (
         <>
-          <div className="flex gap-4 flex-wrap justify-center">
+          <div className="flex flex-wrap justify-center gap-4">
             {recipes.map(
               (recipe) =>
                 recipe && (
