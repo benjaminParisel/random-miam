@@ -1,12 +1,7 @@
 'use server';
 import type { Recipe } from '@prisma/client';
 import prisma from '@/lib/prisma';
-import {
-  recipeSchema,
-  recipeSchemaType,
-  recipeTypeSchema,
-  recipesSchema,
-} from '@/schema/recipe';
+import { recipeSchema, recipeSchemaType, recipesSchema } from '@/schema/recipe';
 
 export const getAllRecipesWith = async (type: string) => {
   const data: Recipe[] = await prisma.recipe.findMany({

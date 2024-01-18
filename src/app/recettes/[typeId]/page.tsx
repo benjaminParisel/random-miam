@@ -2,16 +2,11 @@ import { DataTable } from '@/components/table/Data-table';
 import { getServerAuthSession } from '@/server/auth';
 import { getAllRecipesWith } from '@/server/recipes/recipe';
 import { columns } from '../Columns';
-import { getType } from '@/types/recipe';
-import { DialogHeader, DialogFooter } from '@/components/ui/dialog';
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-} from '@radix-ui/react-dialog';
+import { RecipeType, getType } from '@/types/recipe';
+
 import CreateRecipeBtn from '@/components/recipe/CreateRecipe';
+import { DataTablePagination } from '@/components/table/TablePagination';
+import CreateFormBtn from '@/components/recipe/CreateFormBtn';
 
 export default async function listType({
   params,
@@ -24,15 +19,18 @@ export default async function listType({
   const recipes = await getAllRecipesWith(type);
 
   return (
-    <div className="flex min-h-screen flex-col items-center p-12">
+    <div className="flex min-h-screen w-full flex-col p-12">
       {authSession && (
-        <div className="flex w-auto flex-col items-end justify-center bg-fuchsia-200">
-          <CreateRecipeBtn params={{ typeId }} />
+        <div className="flex flex-col justify-center">
+          <div className="flex flex-col items-end">
+            <CreateRecipeBtn typeId={typeId as RecipeType} />
+          </div>
+
           <DataTable data={recipes} columns={columns} />
+          {/* <DataTablePagination table={recipes} /> */}
         </div>
       )}
       {!authSession && <div>Please login</div>}
-      <p className="mt-10 text-xl text-primary">Bon appétit !</p>
     </div>
   );
 }

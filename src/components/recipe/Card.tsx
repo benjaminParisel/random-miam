@@ -21,10 +21,10 @@ export default function RecipeCard(props: RecipeProps) {
   return (
     <Card key={recipe.id} className="w-[310px]">
       <CardHeader className={cn('h-20')}>
-        <CardTitle className="text-ellipsis text-wrap text-md">
+        <CardTitle className="text-ellipsis text-wrap">
           {recipe.title}
         </CardTitle>
-        <CardDescription className="flex items-center justify-end text-muted-foreground text-sm">
+        <CardDescription className="flex items-center justify-end text-sm text-muted-foreground">
           {recipe.type}
         </CardDescription>
       </CardHeader>

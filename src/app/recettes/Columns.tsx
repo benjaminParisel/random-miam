@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { CiEdit } from 'react-icons/ci';
 import { Recipe } from '@/types/recipe';
-import { Button } from '../../components/ui/button';
+import { Button } from '@/components/ui/button';
 import { RxCaretDown, RxCaretSort, RxCaretUp } from 'react-icons/rx';
 
 export const columns: ColumnDef<Recipe>[] = [
@@ -16,8 +16,9 @@ export const columns: ColumnDef<Recipe>[] = [
     ),
     cell: ({ row }) => {
       const recipe = row.original;
-
-      return <div className="text-left"> {recipe.title}</div>;
+      return (
+        <DataTableCell value={recipe?.title || ''} className={'text-left'} />
+      );
     },
   },
   {
@@ -25,12 +26,24 @@ export const columns: ColumnDef<Recipe>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Details" />
     ),
+    cell: ({ row }) => {
+      const recipe = row.original;
+      return (
+        <DataTableCell value={recipe?.details || ''} className={'text-left'} />
+      );
+    },
   },
   {
     accessorKey: 'type',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Type" />
     ),
+    cell: ({ row }) => {
+      const recipe = row.original;
+      return (
+        <DataTableCell value={recipe?.type || ''} className={'text-left'} />
+      );
+    },
   },
   {
     id: 'actions',
@@ -40,7 +53,7 @@ export const columns: ColumnDef<Recipe>[] = [
       return (
         <div>
           <Link href={`/recettes/${recipe.type.toLowerCase()}/${recipe.id}`}>
-            <CiEdit className="text-muted-foreground" />
+            <CiEdit className="size-6 text-muted-foreground" />
           </Link>
         </div>
       );
@@ -73,13 +86,22 @@ export function DataTableColumnHeader<TData, TValue>({
       >
         <span>{title}</span>
         {column.getIsSorted() === 'desc' ? (
-          <RxCaretDown className="ml-2 h-4 w-4" />
+          <RxCaretDown className="ml-2 size-4" />
         ) : column.getIsSorted() === 'asc' ? (
-          <RxCaretUp className="ml-2 h-4 w-4" />
+          <RxCaretUp className="ml-2 size-4" />
         ) : (
-          <RxCaretSort className="ml-2 h-4 w-4" />
+          <RxCaretSort className="ml-2 size-4" />
         )}
       </Button>
     </div>
   );
+}
+
+interface DataTableCellProps {
+  value: string;
+  className: string;
+}
+
+export function DataTableCell({ value, className }: DataTableCellProps) {
+  return <div className={className}>{value}</div>;
 }

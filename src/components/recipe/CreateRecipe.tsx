@@ -24,33 +24,33 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/components/ui/use-toast';
-import { BsFileEarmarkPlus } from 'react-icons/bs';
 import { useRouter } from 'next/navigation';
-import { getNavigationRecipeFrom } from '@/app/NavigationLink';
 import { recipeSchemaType, recipeSchema } from '@/schema/recipe';
 import { createRecipe } from '@/server/recipes/recipe';
-import { RxCross1, RxPlus } from 'react-icons/rx';
 import { RecipeType, getType } from '@/types/recipe';
+import { RxPlusCircled } from 'react-icons/rx';
+import { useState } from 'react';
 
-function CreateRecipeBtn({ params }: { params: { typeId: string } }) {
+function CreateRecipeBtn({ typeId }: { typeId: RecipeType }) {
   const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const type = getType(typeId);
 
-  const recipe = useForm<recipeSchemaType>({
+  const recipeForm = useForm<recipeSchemaType>({
     resolver: zodResolver(recipeSchema),
-    defaultValues: { type: getType(params.typeId) as RecipeType },
+    defaultValues: { details: '', type: type },
   });
-  console.log('params', params.typeId);
 
   async function onSubmit(values: recipeSchemaType) {
     try {
-      console.log('values', values);
-      const recipe = await createRecipe(values);
+      await createRecipe(values);
       toast({
         title: 'Succès',
         description: 'Recette ajouté avec succès.',
         variant: 'success',
       });
-      router.push(`/recettes/${getNavigationRecipeFrom(recipe.type)}`, {});
+      setOpen(false);
+      recipeForm.reset();
       router.refresh();
     } catch (error) {
       console.log(error);
@@ -61,30 +61,34 @@ function CreateRecipeBtn({ params }: { params: { typeId: string } }) {
       });
     }
   }
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           variant={'outline'}
-          className="group flex flex-col items-center justify-center gap-4 border border-primary/20 bg-primary hover:cursor-pointer hover:border-primary"
+          className="group flex flex-row items-center justify-center gap-2"
         >
-          <RxPlus className="size-8 text-muted-foreground group-hover:text-primary" />
-          <p className="text-xl font-bold text-muted-foreground group-hover:text-primary">
-            Ajouter une recette
+          <RxPlusCircled className="size-6 text-muted-foreground group-hover:text-primary" />
+          <p className="font-bold text-muted-foreground group-hover:text-primary">
+            Ajouter
           </p>
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create form</DialogTitle>
+          <DialogTitle>Ajouter une recette</DialogTitle>
           <DialogDescription>
-            Create a new form to start collecting responses
+            Ajouter une recette de type {typeId}
           </DialogDescription>
         </DialogHeader>
-        <Form {...recipe}>
-          <form onSubmit={recipe.handleSubmit(onSubmit)} className="space-y-2">
+        <Form {...recipeForm}>
+          <form
+            onSubmit={recipeForm.handleSubmit(onSubmit)}
+            className="space-y-2"
+          >
             <FormField
-              control={recipe.control}
+              control={recipeForm.control}
               name="title"
               render={({ field }) => (
                 <FormItem>
@@ -97,7 +101,7 @@ function CreateRecipeBtn({ params }: { params: { typeId: string } }) {
               )}
             />
             <FormField
-              control={recipe.control}
+              control={recipeForm.control}
               name="details"
               render={({ field }) => (
                 <FormItem>
@@ -109,34 +113,24 @@ function CreateRecipeBtn({ params }: { params: { typeId: string } }) {
                 </FormItem>
               )}
             />
-            <FormField
-              control={recipe.control}
-              name="type"
-              disabled
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Type</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <DialogFooter>
+              <DialogFooter>
+                <Button
+                  onClick={() => recipeForm.handleSubmit(onSubmit)}
+                  disabled={recipeForm.formState.isSubmitting}
+                  className="mt-4 w-full"
+                >
+                  {!recipeForm.formState.isSubmitting && (
+                    <span>Sauvegarder</span>
+                  )}
+                  {recipeForm.formState.isSubmitting && (
+                    <ImSpinner2 className="animate-spin" />
+                  )}
+                </Button>
+              </DialogFooter>
+            </DialogFooter>
           </form>
         </Form>
-        <DialogFooter>
-          <Button
-            onClick={recipe.handleSubmit(onSubmit)}
-            disabled={recipe.formState.isSubmitting}
-            className="mt-4 w-full"
-          >
-            {!recipe.formState.isSubmitting && <span>Save</span>}
-            {recipe.formState.isSubmitting && (
-              <ImSpinner2 className="animate-spin" />
-            )}
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

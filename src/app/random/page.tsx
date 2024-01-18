@@ -7,8 +7,8 @@ import RecipeCard from '@/components/recipe/Card';
 export default async function Random() {
   const authSession = await getServerAuthSession();
 
-  const starters = await getAllRecipesWith(RecipeType.Entree);
-  const main = await getAllRecipesWith(RecipeType.Plat);
+  const starters = await getAllRecipesWith(RecipeType.Entrees);
+  const main = await getAllRecipesWith(RecipeType.Plats);
   const desserts = await getAllRecipesWith(RecipeType.Desserts);
 
   const recipes = [

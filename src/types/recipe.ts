@@ -16,12 +16,12 @@ export const RecipeType = {
 export function getType(type: string) {
   switch (type) {
     case 'entrees':
-      return RecipeType.Entrees;
+      return RecipeType.Entrees as RecipeType;
     case 'plats':
-      return RecipeType.Plats;
+      return RecipeType.Plats as RecipeType;
     case 'desserts':
-      return RecipeType.Desserts;
+      return RecipeType.Desserts as RecipeType;
     default:
-      return '';
+      throw new Error('Invalid type');
   }
 }

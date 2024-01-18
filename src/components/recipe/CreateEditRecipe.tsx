@@ -25,7 +25,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../ui/select';
+} from '@/components/ui/select';
 import { getNavigationRecipeFrom } from '@/app/NavigationLink';
 import { useEffect } from 'react';
 
@@ -37,7 +37,7 @@ function AddOrEditRecipeForm(props: RecipeFormProps) {
   const router = useRouter();
   const isEdit = !!props.recipe;
   const initialType = getNavigationRecipeFrom(props.recipe?.type || '');
-  const recipe = useForm<recipeSchemaType>({
+  const recipeForm = useForm<recipeSchemaType>({
     resolver: zodResolver(recipeSchema),
     defaultValues: props.recipe || {},
   });
@@ -68,10 +68,13 @@ function AddOrEditRecipeForm(props: RecipeFormProps) {
 
   return (
     <div>
-      <Form {...recipe}>
-        <form onSubmit={recipe.handleSubmit(onSubmit)} className="space-y-2">
+      <Form {...recipeForm}>
+        <form
+          onSubmit={recipeForm.handleSubmit(onSubmit)}
+          className="space-y-2"
+        >
           <FormField
-            control={recipe.control}
+            control={recipeForm.control}
             name="title"
             render={({ field }) => (
               <FormItem>
@@ -84,7 +87,7 @@ function AddOrEditRecipeForm(props: RecipeFormProps) {
             )}
           />
           <FormField
-            control={recipe.control}
+            control={recipeForm.control}
             name="details"
             render={({ field }) => (
               <FormItem>
@@ -97,7 +100,7 @@ function AddOrEditRecipeForm(props: RecipeFormProps) {
             )}
           />
           <FormField
-            control={recipe.control}
+            control={recipeForm.control}
             name="type"
             render={({ field }) => (
               <FormItem>
@@ -120,12 +123,12 @@ function AddOrEditRecipeForm(props: RecipeFormProps) {
       </Form>
 
       <Button
-        onClick={recipe.handleSubmit(onSubmit)}
-        disabled={recipe.formState.isSubmitting}
+        onClick={recipeForm.handleSubmit(onSubmit)}
+        disabled={recipeForm.formState.isSubmitting}
         className="mt-4 w-full"
       >
-        {!recipe.formState.isSubmitting && <span>Save</span>}
-        {recipe.formState.isSubmitting && (
+        {!recipeForm.formState.isSubmitting && <span>Save</span>}
+        {recipeForm.formState.isSubmitting && (
           <ImSpinner2 className="animate-spin" />
         )}
       </Button>
